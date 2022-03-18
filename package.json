@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./docs/file-system.js"
+    "start": "cross-env MESSAGE=hello node ./docs/events.js"
   },
   "keywords": [],
   "author": "",
