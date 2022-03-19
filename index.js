@@ -1,14 +1,18 @@
-const router = require('./framework/Router')
-const app = require('./framework/App')
+require('dotenv').config()
 const PORT = process.env.PORT || 5000;
+const baseURL = process.env.BASE_URL + PORT;
 
-router.get('/users', (req, res) => {
-    res.end('You send request to /users')
-})
-router.get('/posts', (req, res) => {
-    res.end('You send request to /posts')
-})
+const users = require('./framework/usersRouter')
+const posts = require('./framework/postsRouter')
+const { sendJson, parseURL } = require('./framework/middlewares')
+const app = require('./framework/App')
 
+
+
+const router = { endpoints: { ...users, ...posts } }
+
+app.use(parseURL(baseURL))
+app.use(sendJson)
 app.addRouter(router)
 
 
