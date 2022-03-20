@@ -1,30 +1,10 @@
 const router = require('./Router')
+const UserController = require('./userController')
 
-const users = [
-    { id: '1', name: 'vasya' },
-    { id: '2', name: 'kolya' },
-    { id: '3', name: 'sanya' },
-]
 
-router.get('/users', (req, res) => {
-    const { id } = req.params
-    if (id) {
-        return res.send(users.find((user) => user.id === id))
-    }
-
-    res.send(users)
-})
-
-router.post('/users', (req, res) => {
-    const { name } = req.body
-    const user = {
-        id: Date.now(),
-        name
-    }
-
-    users.push(user)
-    res.send(user)
-})
+router.get('/users', UserController.getAll.bind(UserController))
+//router.get('/users/:id', UserController.getOne.bind(UserController))
+router.post('/users', UserController.add.bind(UserController))
 
 
 module.exports = router.endpoints
