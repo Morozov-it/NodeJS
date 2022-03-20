@@ -1,38 +1,31 @@
-const users = [
-    { id: '1', name: 'vasya' },
-    { id: '2', name: 'kolya' },
-    { id: '3', name: 'sanya' },
-]
+const User = require('./userModel')
+
 
 class UserController {
-    constructor(users) {
-        this.users = users
+    async getAll(req, res) {
+        try {
+            let users;
+            const { id } = req.params
+            if (id) {
+                users = await User.findById(id)
+            } else {
+                users = await User.find()
+            }
+            return res.send(users)
+        } catch (e) {
+            return res.send(e.message)
+        }
     }
 
-    getAll(req, res) {
-        const { id } = req.params
-        const target = this.users.find((user) => user.id === id)
-        if (target) {
-            return res.send(target)
+    async add(req, res) {
+        try {
+            const { name, password } = req.body
+            const user = await User.create({ name, password })
+            return res.send(user)
+        } catch (e) {
+            return res.send(e.message)
         }
-        return res.send(this.users)
-    }
-
-    // getOne(req, res) {
-    //     
-    //     return res.send(this.users)
-    // }
-
-    add(req, res) {
-        const { name } = req.body
-        const user = {
-            id: Date.now().toString(),
-            name
-        }
-    
-        this.users.push(user)
-        return res.send(user)
     }
 }
 
-module.exports = new UserController(users)
+module.exports = new UserController()
